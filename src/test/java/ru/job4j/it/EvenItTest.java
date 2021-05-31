@@ -56,4 +56,5 @@ public class EvenItTest {
         assertThat(it.next(), is(6));
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(8));
-    }}
+    }
+}
