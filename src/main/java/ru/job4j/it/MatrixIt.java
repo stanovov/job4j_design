@@ -37,13 +37,4 @@ public class MatrixIt implements Iterator<Integer> {
         }
         return data[row][column++];
     }
-
-    public static void main(String[] args) {
-        MatrixIt it = new MatrixIt(new int[][]{
-                {1}, {2}, {3, 4}
-        });
-        while (it.hasNext()) {
-            System.out.println(it.next());
-        }
-    }
 }
