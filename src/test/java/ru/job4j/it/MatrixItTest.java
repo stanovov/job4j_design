@@ -90,4 +90,15 @@ public class MatrixItTest {
         MatrixIt it = new MatrixIt(in);
         assertThat(it.hasNext(), is(false));
     }
+
+    @Test
+    public void whenAfterAllElementsHasNext() {
+        int[][] in = {{1}, {2}, {3, 4}};
+        MatrixIt it = new MatrixIt(in);
+        it.next();
+        it.next();
+        it.next();
+        it.next();
+        assertThat(it.hasNext(), is(false));
+    }
 }
