@@ -6,25 +6,27 @@ public class SimpleQueue<T> {
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
 
-    private int size = 0;
+    private int sizeIn = 0;
+    private int sizeOut = 0;
 
     public T poll() {
-        if (size == 0) {
+        if (sizeIn == 0 && sizeOut == 0) {
             throw new NoSuchElementException();
         }
-        for (int i = 0; i < size; i++) {
+        if (sizeOut > 0) {
+            sizeOut--;
+            return out.pop();
+        }
+        for (int i = 0; i < sizeIn; i++) {
             out.push(in.pop());
         }
-        T result = out.pop();
-        size--;
-        for (int i = 0; i < size; i++) {
-            in.push(out.pop());
-        }
-        return result;
+        sizeOut = sizeIn - 1;
+        sizeIn = 0;
+        return out.pop();
     }
 
     public void push(T value) {
         in.push(value);
-        size++;
+        sizeIn++;
     }
 }
