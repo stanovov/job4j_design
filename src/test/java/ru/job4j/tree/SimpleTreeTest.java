@@ -41,7 +41,8 @@ public class SimpleTreeTest {
     @Test
     public void whenChildExistThenFalse() {
         Tree<Integer> tree = new SimpleTree<>(1);
-        assertTrue(tree.add(1, 2));
-        assertFalse(tree.add(1, 2));
+        tree.add(1, 2);
+        tree.add(2, 3);
+        assertFalse(tree.add(1, 3));
     }
 }
