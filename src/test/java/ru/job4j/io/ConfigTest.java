@@ -11,7 +11,7 @@ public class ConfigTest {
         String path = "./data/pair_without_comment.properties";
         Config config = new Config(path);
         config.load();
-        assertThat(config.value("name"),is("Petr Arsentev"));
+        assertThat(config.value("name"), is("Petr Arsentev"));
     }
 
     @Test
@@ -19,7 +19,7 @@ public class ConfigTest {
         String path = "./data/pair_with_comment.properties";
         Config config = new Config(path);
         config.load();
-        assertThat(config.value("name"),is("Semyon Stanovov"));
+        assertThat(config.value("name"), is("Semyon Stanovov"));
     }
 
     @Test
@@ -27,7 +27,7 @@ public class ConfigTest {
         String path = "./data/pair_with_empty_strings.properties";
         Config config = new Config(path);
         config.load();
-        assertThat(config.value("city"),is("Tver'"));
+        assertThat(config.value("city"), is("Tver'"));
     }
 
     @Test(expected = IllegalArgumentException.class)

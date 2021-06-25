@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
 public class FrogTest {
 
     @Test
-    public void WhenFrogMadeItFinish() {
+    public void whenFrogMadeItFinish() {
         Segment start = new Segment(11, 7);
         Segment finish = new Segment(9, 10);
         Set<Segment> trees = new HashSet<>(
@@ -25,7 +25,7 @@ public class FrogTest {
     }
 
     @Test
-    public void WhenTreesGetInWayThenFrogGot() {
+    public void whenTreesGetInWayThenFrogGot() {
         Segment start = new Segment(11, 7);
         Segment finish = new Segment(9, 10);
         Set<Segment> trees = new HashSet<>(
@@ -46,7 +46,7 @@ public class FrogTest {
     }
 
     @Test
-    public void WhenTreesGetInWayThenFrogNotGot() {
+    public void whenTreesGetInWayThenFrogNotGot() {
         Segment start = new Segment(11, 7);
         Segment finish = new Segment(9, 10);
         Set<Segment> trees = new HashSet<>(
