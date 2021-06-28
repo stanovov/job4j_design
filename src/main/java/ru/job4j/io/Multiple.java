@@ -9,7 +9,7 @@ public class Multiple {
             for (int j = 1; j <= 10; j++) {
                 sb.append(i * j).append("\t");
             }
-            sb.append("\n");
+            sb.append(System.lineSeparator());
         }
         try (FileOutputStream out = new FileOutputStream("result.txt")) {
             out.write(sb.toString().getBytes());
