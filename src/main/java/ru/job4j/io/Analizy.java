@@ -24,12 +24,14 @@ public class Analizy {
                     }
                 } else if ("200".equals(status) || "300".equals(status)) {
                     if (sb.length() != 0) {
-                        sb.append(period);
+                        sb.append(period).append(";");
                         out.println(sb.toString());
                         sb = new StringBuilder();
                     }
                 }
             }
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException();
         } catch (Exception e) {
             e.printStackTrace();
         }
