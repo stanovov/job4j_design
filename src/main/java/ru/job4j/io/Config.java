@@ -2,6 +2,7 @@ package ru.job4j.io;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -26,9 +27,7 @@ public class Config {
                         }
                         values.put(entry[0], entry[1]);
                     });
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
