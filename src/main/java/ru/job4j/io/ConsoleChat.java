@@ -1,11 +1,13 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class ConsoleChat {
     private final String path;
@@ -22,21 +24,26 @@ public class ConsoleChat {
 
     public void run() {
         String botStatus = CONTINUE;
-        try (BufferedReader in = new BufferedReader(new FileReader(botAnswers));
-             PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(path)));
-             BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in))) {
-            List<String> answers = in.lines().collect(Collectors.toList());
-            if (answers.size() == 0) {
-                throw new IllegalArgumentException("File with phrases is not filled");
-            }
-            Random random = new Random();
+        List<String> answers = new ArrayList<>();
+        try (BufferedReader in = new BufferedReader(new FileReader(botAnswers))) {
+            in.lines().forEach(answers::add);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (answers.size() == 0) {
+            throw new IllegalArgumentException("File with phrases is not filled");
+        }
+        Random random = new Random();
+        try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(path)),
+                false, StandardCharsets.UTF_8);
+             BufferedReader consoleIn = new BufferedReader(new InputStreamReader(System.in))) {
             while (!botStatus.equals(OUT)) {
-                String consoleInput = consoleReader.readLine();
+                String consoleInput = consoleIn.readLine();
                 String check = consoleInput.toLowerCase();
                 boolean isStatus = check.equals(OUT) || check.equals(STOP)
                                         || check.equals(CONTINUE);
                 if (isStatus) {
-                    botStatus = consoleInput;
+                    botStatus = check;
                 }
                 LocalDateTime currentDateTime = LocalDateTime.now();
                 String formattedCurrDate = currentDateTime.format(FORMATTER);
