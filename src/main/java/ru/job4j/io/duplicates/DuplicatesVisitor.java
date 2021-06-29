@@ -9,12 +9,14 @@ import java.util.*;
 
 public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
 
-    private Map<FileProperty, Path> files = new HashMap<>();
-    private Map<FileProperty, List<Path>> duplicates = new LinkedHashMap<>();
+    private Map<FileProperty, List<Path>> files = new LinkedHashMap<>();
 
     public void show() {
-        for (FileProperty key : duplicates.keySet()) {
-            List<Path> paths = duplicates.get(key);
+        for (FileProperty key : files.keySet()) {
+            List<Path> paths = files.get(key);
+            if (paths.size() == 1) {
+                continue;
+            }
             System.out.printf("У файла = %s %d b имеются дубли:%n", key.getName(), key.getSize());
             for (Path path : paths) {
                 System.out.println(path.toAbsolutePath());
@@ -30,17 +32,13 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
                 file.getFileName().toString()
         );
         if (!files.containsKey(property)) {
-            files.put(property, file);
+            List<Path> paths = new ArrayList<>(
+                    List.of(file)
+            );
+            files.put(property, paths);
         } else {
-            if (duplicates.containsKey(property)) {
-                duplicates.get(property)
-                        .add(file);
-            } else {
-                List<Path> paths = new ArrayList<>();
-                paths.add(files.get(property));
-                paths.add(file);
-                duplicates.put(property, paths);
-            }
+            files.get(property)
+                    .add(file);
         }
         return super.visitFile(file, attrs);
     }
