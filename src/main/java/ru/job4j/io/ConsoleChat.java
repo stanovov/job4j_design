@@ -12,6 +12,7 @@ import java.util.Random;
 public class ConsoleChat {
     private final String path;
     private final String botAnswers;
+    private static final Random RANDOM = new Random();
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     private static final String OUT = "закончить";
     private static final String STOP = "стоп";
@@ -33,10 +34,8 @@ public class ConsoleChat {
         if (answers.size() == 0) {
             throw new IllegalArgumentException("File with phrases is not filled");
         }
-        Random random = new Random();
-        try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(path)),
-                false, StandardCharsets.UTF_8);
-             BufferedReader consoleIn = new BufferedReader(new InputStreamReader(System.in))) {
+        List<String> logs = new ArrayList<>();
+        try (BufferedReader consoleIn = new BufferedReader(new InputStreamReader(System.in))) {
             while (!botStatus.equals(OUT)) {
                 String consoleInput = consoleIn.readLine();
                 String check = consoleInput.toLowerCase();
@@ -47,12 +46,31 @@ public class ConsoleChat {
                 }
                 LocalDateTime currentDateTime = LocalDateTime.now();
                 String formattedCurrDate = currentDateTime.format(FORMATTER);
-                out.println(formattedCurrDate + " USER: " + consoleInput);
+                logs.add(String.format("%s USER: %s", formattedCurrDate, consoleInput));
                 if (botStatus.equals(CONTINUE)) {
-                    String botAnswer = answers.get(random.nextInt(answers.size()));
+                    String botAnswer = getPhrase(answers);
                     System.out.println(botAnswer);
-                    out.println(formattedCurrDate + " BOT: " + botAnswer);
+                    logs.add(String.format("%s BOT: %s", formattedCurrDate, botAnswer));
                 }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        writeLogs(logs);
+    }
+
+    private String getPhrase(List<String> phrases) {
+        return phrases.get(RANDOM.nextInt(phrases.size()));
+    }
+
+    private void writeLogs(List<String> logs) {
+        if (logs.size() == 0) {
+            return;
+        }
+        try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(path)),
+                false, StandardCharsets.UTF_8)) {
+            for (String log : logs) {
+                out.println(log);
             }
         } catch (IOException e) {
             e.printStackTrace();
