@@ -43,24 +43,7 @@ public class Zip {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        if (args.length < 2) {
-            throw new IllegalArgumentException(
-                    "Incorrect number of parameters. Usage \"java -jar dir.jar "
-                            + "ROOT_FOLDER EXCLUDING_EXTENSIONS ARCHIVE_NAME\"."
-            );
-        }
-        ArgsName argsName = ArgsName.of(args);
-        String directory = argsName.get("d");
-        String output = argsName.get("o");
-        String exclude = argsName.get("e");
-        File file = new File(directory);
-        if (!file.exists()) {
-            throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
-        }
-        if (!file.isDirectory()) {
-            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
-        }
+    private static Predicate<Path> getPredicate(String exclude) {
         Predicate<Path> predicate;
         if (exclude.isEmpty()) {
             predicate = p -> true;
@@ -79,8 +62,29 @@ public class Zip {
                 };
             }
         }
+        return predicate;
+    }
+
+    public static void main(String[] args) throws IOException {
+        if (args.length < 2) {
+            throw new IllegalArgumentException(
+                    "Incorrect number of parameters. Usage \"java -jar dir.jar "
+                            + "ROOT_FOLDER EXCLUDING_EXTENSIONS ARCHIVE_NAME\"."
+            );
+        }
+        ArgsName argsName = ArgsName.of(args);
+        String directory = argsName.get("d");
+        String output = argsName.get("o");
+        String exclude = argsName.get("e");
+        File file = new File(directory);
+        if (!file.exists()) {
+            throw new IllegalArgumentException(String.format("Not exist %s", file.getAbsoluteFile()));
+        }
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format("Not directory %s", file.getAbsoluteFile()));
+        }
         Path start = Paths.get(directory);
-        List<Path> paths = Search.search(start, predicate);
-        new Zip().packFiles(paths, Paths.get(start.getParent() + "\\" + output));
+        List<Path> paths = Search.search(start, getPredicate(exclude));
+        new Zip().packFiles(paths, Paths.get(start.getParent() + File.separator + output));
     }
 }
