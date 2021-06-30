@@ -9,12 +9,15 @@ public class EchoServer {
         try (ServerSocket server = new ServerSocket(9000)) {
             while (!server.isClosed()) {
                 Socket socket = server.accept();
-                try (OutputStream out = socket.getOutputStream();
+                try (OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
                      BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
                     boolean messageFound = false;
                     boolean closed = false;
                     String answer = "What";
                     for (String str = in.readLine(); str != null && !str.isEmpty(); str = in.readLine()) {
+                        if (str.contains("/favicon")) {
+                            break;
+                        }
                         if (!messageFound) {
                             int startIndex = str.indexOf("/?msg=");
                             int lastIndex = str.lastIndexOf(" HTTP/1.1");
@@ -30,13 +33,17 @@ public class EchoServer {
                         }
                         System.out.println(str);
                     }
-                    if (closed) {
-                        server.close();
-                    } else {
-                        out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
-                        out.write(answer.getBytes());
+                    if (messageFound) {
+                        if (closed) {
+                            server.close();
+                        } else {
+                            out.write("HTTP/1.1 200 OK\r\n\r\n");
+                            out.write((answer + "\n"));
+                            out.flush();
+                        }
                     }
                 }
+                socket.close();
             }
         }
     }
