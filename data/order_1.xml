@@ -1,0 +1,7 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<order id="1" name="New order" delivery="true" status="SENT" price="260.0">
+    <products>
+        <product id="product_1" name="Тетрадь в клетку 24 листа" price="111.0" quantity="2.0"/>
+        <product id="product_2" name="Ручка черная гелиевая" price="38.0" quantity="1.0"/>
+    </products>
+</order>
