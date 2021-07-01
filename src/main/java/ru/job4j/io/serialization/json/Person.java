@@ -48,8 +48,7 @@ public class Person {
         return statuses;
     }
 
-    public static void main(String[] args) {
-        /* Json with GSON
+    public static void exampleGSON() {
         final Person person = new Person(false, 30, new Contact("11-111"), "Worker", "Married");
 
         // Преобразуем объект person в json-строку.
@@ -70,9 +69,9 @@ public class Person {
                         + "}";
         final Person personMod = gson.fromJson(personJson, Person.class);
         System.out.println(personMod);
-        */
+    }
 
-        /* Json with POJO */
+    public static void examplePOJO() {
         // JSONObject из json-строки строки
         JSONObject jsonContact = new JSONObject("{\"phone\":\"+7(924)111-111-11-11\"}");
 
@@ -95,5 +94,9 @@ public class Person {
 
         // Преобразуем объект person в json-строку
         System.out.println(new JSONObject(person).toString());
+    }
+
+    public static void main(String[] args) {
+        examplePOJO();
     }
 }
