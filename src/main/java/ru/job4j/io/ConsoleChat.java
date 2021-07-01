@@ -1,7 +1,6 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -25,15 +24,7 @@ public class ConsoleChat {
 
     public void run() {
         String botStatus = CONTINUE;
-        List<String> answers = new ArrayList<>();
-        try (BufferedReader in = new BufferedReader(new FileReader(botAnswers))) {
-            in.lines().forEach(answers::add);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (answers.size() == 0) {
-            throw new IllegalArgumentException("File with phrases is not filled");
-        }
+        List<String> answers = readPhrases();
         List<String> logs = new ArrayList<>();
         try (BufferedReader consoleIn = new BufferedReader(new InputStreamReader(System.in))) {
             while (!botStatus.equals(OUT)) {
@@ -75,6 +66,19 @@ public class ConsoleChat {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private List<String> readPhrases() {
+        List<String> answers = new ArrayList<>();
+        try (BufferedReader in = new BufferedReader(new FileReader(botAnswers))) {
+            in.lines().forEach(answers::add);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (answers.size() == 0) {
+            throw new IllegalArgumentException("File with phrases is not filled");
+        }
+        return answers;
     }
 
     public static void main(String[] args) {
