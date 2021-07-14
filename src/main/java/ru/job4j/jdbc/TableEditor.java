@@ -22,11 +22,12 @@ public class TableEditor implements AutoCloseable {
     }
 
     private void initConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        String url = properties.getProperty("url");
-        String login = properties.getProperty("login");
-        String password = properties.getProperty("password");
-        connection = DriverManager.getConnection(url, login, password);
+        Class.forName(properties.getProperty("driver-class-name"));
+        connection = DriverManager.getConnection(
+                properties.getProperty("url"),
+                properties.getProperty("username"),
+                properties.getProperty("password")
+        );
     }
 
     public void createTable(String tableName) throws SQLException {
