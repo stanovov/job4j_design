@@ -19,7 +19,7 @@ public class TestGC {
         System.out.printf("Free memory at the start of work = %d MB%n", freeMemoryMB());
         User emptyUser = new User();
         System.out.printf("Empty user weighs = %d BYTES%n", sizeOf(emptyUser));
-        User notEmptyUser = new User(42, "Alex");
+        User notEmptyUser = new User(1, "a");
         System.out.printf("Not empty user weighs = %d BYTES%n", sizeOf(notEmptyUser));
         User[] users = new User[arrLength];
         System.out.println("Free memory after creating an array of " + arrLength + " = " + freeMemoryMB() + " MB");
