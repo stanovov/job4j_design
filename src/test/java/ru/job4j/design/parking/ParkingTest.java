@@ -1,49 +1,41 @@
 package ru.job4j.design.parking;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class ParkingTest {
 
-    @Ignore
     @Test
     public void whenCreatingParkingWithSpaceOnlyForTrucks() {
         new Parking(0, 1);
     }
 
-    @Ignore
     @Test
     public void whenCreatingParkingWithSpaceOnlyForPassengerCars() {
         new Parking(1, 0);
     }
 
-    @Ignore
     @Test
     public void whenCreatingParkingWithSpaceForAllCars() {
         new Parking(1, 1);
     }
 
-    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void whenParkingWithNoSpacesIsCreated() {
         new Parking(0, 0);
     }
 
-    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void whenParkingWithNegativeParameterPlacesForPassengersCarsIsCreated() {
         new Parking(-1, 2);
     }
 
-    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void whenParkingWithNegativeParameterPlacesForTrucksIsCreated() {
         new Parking(2, -5);
     }
 
-    @Ignore
     @Test
     public void whenPassengerCarsPark() {
         ParkingLot parkingLot = new Parking(3, 0);
@@ -55,7 +47,6 @@ public class ParkingTest {
         assertTrue(parkingLot.park(car3));
     }
 
-    @Ignore
     @Test
     public void whenPassengerCarsParkAndNotEnoughSpace() {
         ParkingLot parkingLot = new Parking(2, 0);
@@ -67,7 +58,6 @@ public class ParkingTest {
         assertFalse(parkingLot.park(car3));
     }
 
-    @Ignore
     @Test
     public void whenParkingIsOnlyForTruck() {
         ParkingLot parkingLot = new Parking(0, 1);
@@ -77,7 +67,6 @@ public class ParkingTest {
         assertTrue(parkingLot.park(truck));
     }
 
-    @Ignore
     @Test
     public void whenTruckIsParkedInPlaceForPassengerCar() {
         ParkingLot parkingLot = new Parking(2, 0);
@@ -85,7 +74,6 @@ public class ParkingTest {
         assertTrue(parkingLot.park(truck));
     }
 
-    @Ignore
     @Test
     public void whenFirstTruckParkedInPlaceForTruckThenCarIsParkedThenTruckParkedInPlaceForThePassengerCars() {
         ParkingLot parkingLot = new Parking(4, 1);
@@ -97,7 +85,6 @@ public class ParkingTest {
         assertTrue(parkingLot.park(secondTruck));
     }
 
-    @Ignore
     @Test
     public void whenTruckRanOutOfSpace() {
         ParkingLot parkingLot = new Parking(2, 0);
@@ -105,7 +92,6 @@ public class ParkingTest {
         assertFalse(parkingLot.park(truck));
     }
 
-    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void whenSamePassengerCarIsParked() {
         ParkingLot parkingLot = new Parking(2, 0);
@@ -114,12 +100,26 @@ public class ParkingTest {
         parkingLot.park(car);
     }
 
-    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void whenSameTruckIsParked() {
         ParkingLot parkingLot = new Parking(0, 2);
-        CanPark truck = new Truck("1", 1);
+        CanPark truck = new Truck("1", 2);
         parkingLot.park(truck);
         parkingLot.park(truck);
+    }
+
+    @Test
+    public void whenCarIsParkedThenCheckThatItIsThere() {
+        Parking parking = new Parking(1, 0);
+        PassengerCar car = new PassengerCar("1");
+        parking.park(car);
+        assertTrue(parking.contains(car));
+    }
+
+    @Test
+    public void whenCarIsNotParkedThenCheckThatItIsThere() {
+        Parking parking = new Parking(1, 0);
+        PassengerCar car = new PassengerCar("1");
+        assertFalse(parking.contains(car));
     }
 }
