@@ -11,4 +11,14 @@ public abstract class Storage implements Store {
     public int size() {
         return foods.size();
     }
+
+    @Override
+    public List<Food> getAll() {
+        return foods;
+    }
+
+    @Override
+    public void clear() {
+        foods.clear();
+    }
 }
